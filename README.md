@@ -17,7 +17,6 @@ Passman is a password manager built with the MERN (MongoDB, Express, React, Node
 - React as the front-end framework
 - Node.js as the back-end runtime environment
 - RSA module for password encryption and decryption
-- Material-UI for front-end design and styling
 - Axios for HTTP requests
 - JWT for token-based authentication
 
@@ -44,9 +43,6 @@ npm start
 ## 🚀 Usage
 - Create an account by providing your email address and a master password.
 - Use the password manager to store your usernames and passwords for various accounts.
-- Use the password strength meter to ensure that your passwords are strong and secure.
-- Enable multi-factor authentication for added security.
-- Share your passwords with other authorized users.
 - Set automatic password expiry and change notifications to ensure that your passwords are always up to date.
 
 ## 🔐 Security
