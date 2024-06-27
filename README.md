@@ -21,7 +21,7 @@ Passman is a password manager built with the MERN (MongoDB, Express, React, Node
 ## 🛠️ Installation
 1. Clone the Repository from Github:
 ```
-git clone https://github.com/your_username/passman.git
+git clone https://github.com/joeyyy09/passman.git
 ```
 2. Install the required packages in the server and client directories:
 ```
