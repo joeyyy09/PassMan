@@ -13,7 +13,7 @@ import Signin from "./pages/signin";
 import SignUp from "./pages/signup";
 import AllPasswords from "./pages/allPassword";
 import { useEffect, useState } from "react";
-import ProtectedRoute from "./utils/ProtectedRoutes";
+// import ProtectedRoute from "./utils/ProtectedRoutes";
 import EditPassword from "./pages/editPassword";
 import LandingPage from "./pages/landingPage";
 
@@ -54,46 +54,46 @@ function App() {
           <Route
             path="/home"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <Home />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route
             path="/privateKey"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <PrivateKey
                   setPrivateKey={setPrivateKey}
                   privateKey={privateKey}
                 />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route
             path="/addPassword"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <AddPassword />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
 
           <Route
             path="/editPassword"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <EditPassword privateKey={privateKey} />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
 
           <Route
             path="/allPasswords"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <AllPasswords privateKey={privateKey} />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
         </Routes>

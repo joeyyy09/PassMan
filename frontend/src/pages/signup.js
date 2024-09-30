@@ -1,13 +1,14 @@
-import axios from "axios";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import axios from "axios";
+import { Mail, Lock, User } from "lucide-react";
 import Modal from "../components/Popup";
 
-const SignUp = (props) => {
+export default function SignUp({ setAccessToken, setPrivateKey, privateKey }) {
   const URL = "http://localhost:3300";
   const [user, setUser] = useState({ email: "", name: "", password: "" });
   const navigate = useNavigate();
-  const { setAccessToken, setPrivateKey, privateKey } = props;
+  axios.defaults.withCredentials = true;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,166 +19,96 @@ const SignUp = (props) => {
   };
 
   const handleSignup = async () => {
-    await axios
-      .post(`${URL}/auth/signup`, user)
-      .then((response) => {
-        if (response.data.accessToken) {
-          setAccessToken(response.data.accessToken);
-          sessionStorage.setItem("access", response.data.accessToken);
-          const xyw = response.data.privateKey;
-          console.log({ xyw });
-          // alert(response.data.privateKey);
-          setPrivateKey(xyw);
-          // navigate("/home");
-        } else {
-          console.log(response.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const response = await axios.post(`${URL}/auth/signup`, user);
+      if (response.data.accessToken) {
+        setAccessToken(response.data.accessToken);
+        sessionStorage.setItem("access", response.data.accessToken);
+        const xyw = response.data.privateKey;
+        console.log({ xyw });
+        setPrivateKey(xyw);
+      } else {
+        console.log(response.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
-    <>
-      {/* <main className="flex flex-col items-center justify-center min-h-screen w-full text-center ">
-        <div className="flex ml-48">
-          <div className=" bg-white w-2/5 p-5 rounded-tl-2xl rounded-bl-2xl py-36 px-12">
-            <h1 className="text-3xl font-bold mb-2 text-black">Hey There!</h1>
-            <div className="border-2 w-24 border-green-500 inline-block mb-2 "></div>
-            <p className="text-lg mb-8 text-black ">
-              Say goodbye to forgotten passwords and hello to secure, easy login
-              with our password manager.
-            </p>
-          </div>
-          <div className="rounded-2xl flex w-2/3 max-w-4xl">
-            <div className=" bg-slate-400 w-3/5 p-5 rounded-tr-2xl rounded-br-2xl ">
-              <div className="py-10">
-                <h1 className="text-3xl font-bold mb-2 ">SignUp</h1>
-              </div>
-              <div className="mb-6">
-                <input
-                  type="text"
-                  id="large-input1"
-                  name="email"
-                  value={user.email}
-                  onChange={handleChange}
-                  className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-              </div>
-              <div className="mb-6">
-                <input
-                  type="text"
-                  id="large-input2"
-                  name="name"
-                  value={user.name}
-                  onChange={handleChange}
-                  className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-              </div>
-              <div className="mb-6">
-                <input
-                  type="password"
-                  id="large-input3"
-                  name="password"
-                  value={user.password}
-                  onChange={handleChange}
-                  className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-              </div>
-              <button onClick={handleSignup}>
-                <Link className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                  SignUp
-                </Link>
-              </button>
-
-              <p className="text-lg mb-4 mt-6">
-                {" "}
-                Already an User? Sign In instead!
-              </p>
-              <Link
-                href="/signin"
-                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-              >
-                Sign In
-              </Link>
-            </div>
-          </div>
+    <div className="min-h-screen bg-black text-white flex flex-col justify-center px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full mx-auto space-y-8">
+        <div className="text-center">
+          <h2 className="mt-6 text-4xl font-extrabold">Create Account</h2>
+          <p className="mt-2 text-sm text-gray-400">Sign up to get started</p>
         </div>
-      </main> */}
-      <div className="relative flex flex-col justify-center min-h-screen overflow-hidden ">
-        <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl">
-          <h1 className="text-3xl text-blue-500 ">
-            Nice to see you here at PassMan!
-          </h1>
-          <form className="mt-6">
-            <div className="mb-2">
-              <label for="email" className=" text-sm text-gray-800">
-                UserName
-              </label>
+        <form className="mt-8 space-y-6">
+          <div className="space-y-4">
+            <div className="relative">
+              <User className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
               <input
-                type="text"
-                id="large-input2"
+                id="name"
                 name="name"
+                type="text"
+                required
+                className="w-full pl-10 pr-3 py-2 text-white bg-gray-800 border-b-2 border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-0 transition duration-300"
+                placeholder="Username"
                 value={user.name}
                 onChange={handleChange}
-                className=" w-full px-4 py-2 mt-2 text-blue-500 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               />
             </div>
-            <div className="mb-2">
-              <label for="email" className=" text-sm text-gray-800">
-                Email
-              </label>
+            <div className="relative">
+              <Mail className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
               <input
-                type="text"
-                id="large-input1"
+                id="email"
                 name="email"
+                type="email"
+                required
+                className="w-full pl-10 pr-3 py-2 text-white bg-gray-800 border-b-2 border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-0 transition duration-300"
+                placeholder="Email address"
                 value={user.email}
                 onChange={handleChange}
-                className=" w-full px-4 py-2 mt-2 text-blue-500 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               />
             </div>
-
-            <div className="mb-2">
-              <label for="password" className=" text-sm text-gray-800">
-                Password
-              </label>
+            <div className="relative">
+              <Lock className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
               <input
-                type="password"
-                id="large-input3"
+                id="password"
                 name="password"
+                type="password"
+                required
+                className="w-full pl-10 pr-3 py-2 text-white bg-gray-800 border-b-2 border-gray-700 focus:outline-none focus:ring-0 transition duration-300"
+                placeholder="Password"
                 value={user.password}
                 onChange={handleChange}
-                className="block w-full px-4 py-2 mt-2 text-blue-500 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               />
             </div>
+          </div>
 
-            <div className="mt-6">
-              {/* <button
-                onClick={handleSignup}
-                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-600"
-              >
-                <Link to="/" />
-                SignUp
-              </button> */}
-              <Modal privateKey={privateKey} handleSignup={handleSignup} />
-            </div>
-          </form>
-
-          <p className="mt-8 text-xs font-light text-center text-gray-700">
-            {" "}
-            Aleady have an account?{" "}
-            <Link
-              to="/signin"
-              className="font-medium text-blue-500 hover:underline"
+          <div>
+             <Modal privateKey={privateKey} handleSignup={handleSignup}>
+            <button
+              type="submit"
+              className="w-full py-3 px-4 text-black bg-white rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2"
             >
-              Sign In
-            </Link>
-          </p>
-        </div>
-      </div>
-    </>
-  );
-};
+              Sign in
+            </button>
+           
 
-export default SignUp;
+            </Modal>
+          </div>
+        </form>
+
+        <p className="mt-4 text-sm text-center text-gray-400">
+          Already have an account?{" "}
+          <Link
+            to="/signin"
+            className="font-medium text-cyan-400 transition duration-300"
+          >
+            Sign in
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
