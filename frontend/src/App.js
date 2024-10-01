@@ -7,7 +7,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Home from "./pages/home";
-import AddPassword from "./pages/appPassword";
+import AddPassword from "./pages/addPassword";
 import PrivateKey from "./pages/privateKey";
 import Signin from "./pages/signin";
 import SignUp from "./pages/signup";

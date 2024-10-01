@@ -68,7 +68,7 @@ const AllPasswords = (props) => {
   );
 
   return (
-    <div className="bg-white">
+    <div className="bg-black">
       <div className="flex justify-center">
         <Navbar className="" />
       </div>

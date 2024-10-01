@@ -1,7 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
+import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+
 export default function CardComponent(props) {
   const {
     email,
@@ -15,9 +16,11 @@ export default function CardComponent(props) {
   const URL = "http://localhost:3300";
   const accessToken = sessionStorage.getItem("access");
   const [Password, setPassword] = useState("*********");
+  const Navigate = useNavigate();
+  
   axios.defaults.headers.common["authorization"] = "Bearer " + accessToken;
   const reqData = { privateKey };
-  const Navigate = useNavigate();
+  
   const axiosJWT = axios.create();
 
   const handleViewPass = (passId) => {
@@ -35,6 +38,7 @@ export default function CardComponent(props) {
         alert("Invalid private key");
       });
   };
+
   const handleEditPass = (passId) => {
     Navigate(`/editPassword?id=${passId}`);
   };
@@ -47,7 +51,6 @@ export default function CardComponent(props) {
         if (!accessToken) {
           console.log("User unauthorised");
         } else {
-          // console.log(accessToken, "hello");
           sessionStorage.setItem("access", accessToken);
         }
       })
@@ -59,10 +62,9 @@ export default function CardComponent(props) {
   axiosJWT.interceptors.request.use(
     async (config) => {
       let currentDate = new Date();
-      // console.log(sessionStorage.getItem("access"));
       const decodedToken = jwt_decode(sessionStorage.getItem("access"));
       if (decodedToken.exp * 1000 < currentDate.getTime()) {
-        const data = await newTokenGenerator();
+        await newTokenGenerator();
         config.headers["authorization"] =
           "Bearer " + sessionStorage.getItem("access");
       }
@@ -74,47 +76,44 @@ export default function CardComponent(props) {
   );
 
   return (
-    <>
-      <div className="rounded-lg shadow-md lg:max-w-sm" id={id}>
-        <div className="p-8 w-full">
-          <div className="flex ">
-            <svg
-              class="fill-current text-gray-500 w-3 h-3 mr-2 mt-2"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
-            </svg>
-            <h4 className=" ml-2 text-xl font-semibold tracking-tight text-blue-600">
-              {siteTitle}
-            </h4>
-          </div>
-          <p class="mt-8 mb-4 text-gray-700 text-base">
-            Site URL: {websiteURL}
-          </p>
-          <p class=" text-gray-700 text-base">Username: {userName}</p>
-          <p class="mb-4 text-gray-700 text-base">Password: {Password}</p>
-          <div className="flex justify-end">
-            <button
-              onClick={() => {
-                handleEditPass(id);
-              }}
-              className="px-4 py-2 mr-2 text-sm text-blue-100 bg-blue-500 rounded shadow"
-            >
-              Edit Password
-            </button>
-
-            <button
-              onClick={() => {
-                handleViewPass(id);
-              }}
-              className="px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded shadow"
-            >
-              View Password
-            </button>
-          </div>
+    <div className="bg-black text-white rounded-lg shadow-md lg:max-w-sm border border-gray-800" id={id}>
+      <div className="p-6 w-full">
+        <div className="flex items-center mb-4">
+          <svg
+            className="fill-current text-gray-400 w-4 h-4 mr-2"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
+          </svg>
+          <h4 className="text-xl font-semibold tracking-tight text-blue-400">
+            {siteTitle}
+          </h4>
+        </div>
+        <p className="mb-2 text-gray-300 text-sm">
+          Site URL: <span className="text-white">{websiteURL}</span>
+        </p>
+        <p className="mb-2 text-gray-300 text-sm">
+          Username: <span className="text-white">{userName}</span>
+        </p>
+        <p className="mb-4 text-gray-300 text-sm">
+          Password: <span className="text-white">{Password}</span>
+        </p>
+        <div className="flex justify-end space-x-2">
+          <button
+            onClick={() => handleEditPass(id)}
+            className="px-4 py-2 text-sm text-black bg-blue-400 rounded shadow hover:bg-blue-500 transition duration-300"
+          >
+            Edit Password
+          </button>
+          <button
+            onClick={() => handleViewPass(id)}
+            className="px-4 py-2 text-sm text-black bg-blue-400 rounded shadow hover:bg-blue-500 transition duration-300"
+          >
+            View Password
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
