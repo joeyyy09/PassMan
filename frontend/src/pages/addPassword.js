@@ -84,11 +84,11 @@ const AddPassword = () => {
   }, []);
 
   return (
-    <div className="h-screen w-full bg-black text-white">
+    <div className="min-h-screen w-full bg-black text-white">
       <Navbar />
-      <div className="flex flex-col items-center justify-center h-full px-6">
-        <form onSubmit={handleAddPassword} className="w-full max-w-2xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Add New Password</h1>
+      <div className="container mx-auto px-4 pt-28 pb-8">
+        <form onSubmit={handleAddPassword} className="max-w-2xl">
+          <h1 className="text-3xl font-bold mb-8">Add New Password</h1>
           <div className="mb-6">
             <label htmlFor="websiteURL" className="block mb-2 text-sm font-medium text-gray-300">
               Website URL
@@ -119,7 +119,6 @@ const AddPassword = () => {
               required
             />
           </div>
-
           <div className="mb-6">
             <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-300">
               Username
@@ -135,7 +134,6 @@ const AddPassword = () => {
               required
             />
           </div>
-
           <div className="mb-6 relative">
             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-300">
               Password
@@ -156,7 +154,6 @@ const AddPassword = () => {
               className="absolute top-10 right-4 cursor-pointer text-gray-400"
             />
           </div>
-
           <div className="mb-6 relative">
             <label htmlFor="confirm_password" className="block mb-2 text-sm font-medium text-gray-300">
               Confirm Password
@@ -177,7 +174,6 @@ const AddPassword = () => {
               className="absolute top-10 right-4 cursor-pointer text-gray-400"
             />
           </div>
-
           <div className="mb-6">
             <label className="flex items-center text-sm font-medium text-gray-300">
               <input
@@ -188,11 +184,10 @@ const AddPassword = () => {
               I agree to the terms and conditions
             </label>
           </div>
-
-          <div className="flex justify-center">
+          <div>
             <button
               type="submit"
-              className="text-black bg-white hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 w-full sm:w-auto transition"
+              className="text-black bg-white hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 transition"
             >
               Add Password
             </button>
