@@ -19,7 +19,6 @@ const passwordSchema = new schema({
   },
   email: {
     type: String,
-    ref: "User",
     required: true,
     trim: true,
   },

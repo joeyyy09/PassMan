@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const client = require("../configs/redis");
 const NodeRSA = require("node-rsa");
 const nodemailer = require("nodemailer");
-const { createError } = require("../utils/error");
 const key = new NodeRSA({ b: 1024 });
 const URL = "http://localhost:3300";
 
@@ -35,101 +34,109 @@ const refreshTokenGenerator = (user) => {
 };
 
 // signup function
-exports.signup = async (req, res, next) => {
+exports.signup = async (req, res) => {
   const { email, name, password } = req.body;
-  try {
-    const validationErrors = validationResult(req);
-    if (validationErrors.isEmpty()) {
-      const isExist = await User.findOne({ email: email });
-      if (isExist) return next(createError(400, "user already exists"));
 
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(password, salt);
+  const validationErrors = validationResult(req);
+  if (validationErrors.isEmpty()) {
+    const isExist = await User.findOne({ email: email });
 
-      const publicKey = key.exportKey("public");
-      const privateKey = key.exportKey("private");
-      const user = new User({
-        email,
-        name,
-        password: hash,
-        publicKey,
+    if (isExist) {
+      res.json({
+        message: "user already exists",
       });
-
-      await user.save();
-      const accessToken = accessTokenGenerator(user);
-      const refreshToken = refreshTokenGenerator(user);
-
-      res.cookie("refreshToken", refreshToken, {
-        expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-      });
-
-      res.status(200).json({ accessToken, refreshToken, privateKey });
     } else {
-      return next(
-        createError(
-          400,
-          validationErrors.array().map((err) => ({ msg: err.msg }))
-        )
-      );
+      bcrypt.hash(password, 10, async (err, hash) => {
+        if (err) {
+          res.json({
+            msg: "err in hashing password",
+          });
+        } else {
+          const publicKey = key.exportKey("public");
+          const privateKey = key.exportKey("private");
+          const user = new User({
+            email,
+            name,
+            password: hash,
+            publicKey,
+          });
+
+          await user.save();
+          const accessToken = accessTokenGenerator(user);
+          const refreshToken = refreshTokenGenerator(user);
+
+          res.cookie("refreshToken", refreshToken, {
+            expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+          });
+
+          res.status(200).json({ accessToken, refreshToken, privateKey });
+        }
+      });
     }
-  } catch (err) {
-    next(err);
+  } else {
+    const errors = validationErrors.array().map((err) => {
+      return {
+        msg: err.msg,
+      };
+    });
+    res.json({
+      errors,
+    });
   }
 };
 
 // signing in the user
-exports.signin = async (req, res, next) => {
+exports.signin = async (req, res) => {
   const { email, password } = req.body;
-  try {
-    const validationErrors = validationResult(req);
-    if (validationErrors.isEmpty()) {
-      const isExist = await User.findOne({ email: email });
-      if (!isExist) return next(createError(404, "user doesnot exists"));
-      //if user exist than compare password
-      //password comes from the user
-      //user.password comes from the database
-
-      const passCorrect = await bcrypt.compare(password, isExist.password);
-      if (!passCorrect)
-        return next(createError(400, "User or password not correct"));
-
-      const accessToken = accessTokenGenerator(isExist);
-      const refreshToken = refreshTokenGenerator(isExist);
-      res.cookie("refreshToken", refreshToken, {
-        expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-      });
-      res.json({ accessToken, refreshToken });
-    } else {
-      return next(
-        createError(
-          400,
-          validationErrors.array().map((err) => ({ msg: err.msg }))
-        )
-      );
+  const validationErrors = validationResult(req);
+  if (validationErrors.isEmpty()) {
+    const isExist = await User.findOne({ email: email });
+    if (!isExist) {
+      res.json({ message: "User does not exist" });
     }
-  } catch (err) {
-    next(err);
+    //if user exist than compare password
+    //password comes from the user
+    //user.password comes from the database
+    else {
+      await bcrypt.compare(password, isExist.password, (err, data) => {
+        if (err) {
+          res.json({
+            msg: "err in hashing password",
+          });
+        } else if (!data) {
+          res.json({ msg: "Password Incorrect" });
+        } else {
+          const accessToken = accessTokenGenerator(isExist);
+          const refreshToken = refreshTokenGenerator(isExist);
+
+          res.cookie("refreshToken", refreshToken, {
+            expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+          });
+          res.json({ accessToken, refreshToken });
+        }
+      });
+    }
+  } else {
+    res.json({
+      msg: validationErrors,
+    });
   }
 };
 
 // exporting Access Token and Refresh Token
-exports.refreshToken = async (req, res, next) => {
-  try {
-    const user = req.user;
+exports.refreshToken = async (req, res) => {
+  const user = req.user;
 
-    const accessToken = accessTokenGenerator(user);
-    const refreshToken = refreshTokenGenerator(user);
+  const accessToken = accessTokenGenerator(user);
+  const refreshToken = refreshTokenGenerator(user);
 
-    res.cookie("refreshToken", refreshToken, {
-      expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
-      httpOnly: true,
-    });
-    res.status(200).json({ accessToken, refreshToken });
-  } catch (err) {
-    next(err);
-  }
+  res.cookie("refreshToken", refreshToken, {
+    expires: new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ accessToken, refreshToken });
 };
 
 exports.forgotPassword = async (req, res) => {

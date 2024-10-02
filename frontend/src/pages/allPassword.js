@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { FaPlus, FaLock } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 import Navbar from "../components/navbar";
 import CardComponent from "../components/cards";
 
