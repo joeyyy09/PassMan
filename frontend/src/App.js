@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 // import ProtectedRoute from "./utils/ProtectedRoutes";
 import EditPassword from "./pages/editPassword";
 import LandingPage from "./pages/landingPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -35,6 +37,18 @@ function App() {
   return (
     <BrowserRouter>
       <main>
+         <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
           <Route
