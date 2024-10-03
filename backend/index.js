@@ -23,6 +23,10 @@ app.use("/auth", authRoutes);
 app.use("/pass", passRoutes);
 // app.use("/key", keyRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
+
 const PORT = process.env.PORT || 3300;
 
 mongoose.set("strictQuery", false);
