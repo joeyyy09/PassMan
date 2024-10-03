@@ -5,7 +5,7 @@ import { FaLock } from "react-icons/fa";
 import Navbar from "../components/navbar";
 import CardComponent from "../components/cards";
 
-const URL = "http://localhost:3300";
+const URL = "https://passman-backend-seven.vercel.app";
 
 const AllPasswords = ({ privateKey }) => {
   const [passwords, setPasswords] = useState([]);

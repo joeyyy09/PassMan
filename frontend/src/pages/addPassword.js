@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const AddPassword = () => {
-  const URL = "http://localhost:3300";
+  const URL = "https://passman-backend-seven.vercel.app";
   const [passDetails, setPassDetails] = useState({
     websiteURL: "",
     Title: "",

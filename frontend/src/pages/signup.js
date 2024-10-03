@@ -6,7 +6,7 @@ import Modal from "../components/Popup";
 import { toast } from "react-toastify";
 
 export default function SignUp({ setAccessToken, setPrivateKey, privateKey }) {
-  const URL = "http://localhost:3300";
+  const URL = "https://passman-backend-seven.vercel.app";
   const [user, setUser] = useState({ email: "", name: "", password: "" });
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;

@@ -5,7 +5,7 @@ import { Mail, Lock } from "lucide-react";
 import { toast } from "react-toastify";
 
 export default function Signin({ setAccessToken }) {
-  const URL = "http://localhost:3300";
+  const URL = "https://passman-backend-seven.vercel.app";
   const [user, setUser] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;

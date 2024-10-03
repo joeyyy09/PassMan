@@ -5,7 +5,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 const EditPassword = (props) => {
-  const URL = "http://localhost:3300";
+  const URL = "https://passman-backend-seven.vercel.app";
   const [passDetailes, setPassDetailes] = useState({});
   const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("access");

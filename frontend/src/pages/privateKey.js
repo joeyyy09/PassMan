@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 import Navbar from "../components/navbar";
 import { FaLock } from "react-icons/fa";
 
-const URL = "http://localhost:3300";
+const URL = "https://passman-backend-seven.vercel.app";
 
 export default function PrivateKey(props) {
   const { setPrivateKey, privateKey } = props;

@@ -13,7 +13,7 @@ export default function CardComponent(props) {
     _id: id,
   } = props.passwordDetailes;
   const { privateKey } = props;
-  const URL = "http://localhost:3300";
+  const URL = "https://passman-backend-seven.vercel.app";
   const accessToken = sessionStorage.getItem("access");
   const [Password, setPassword] = useState("*********");
   const Navigate = useNavigate();
