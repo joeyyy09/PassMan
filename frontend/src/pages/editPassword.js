@@ -249,7 +249,7 @@ const EditPassword = (props) => {
               name="confirm_password"
               value={passDetailes.confirm_password}
               onChange={handleChange}
-              class="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              class="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 "
               placeholder="•••••••••"
               required
             />
