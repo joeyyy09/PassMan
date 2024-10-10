@@ -18,12 +18,20 @@ const LandingPage = () => {
             Keep all of your login information safe and secure
             with our state-of-the-art password manager.
           </p>
-          <Link
-            to="/signup"
-            className="inline-block px-6 py-3 text-sm sm:text-base text-gray-800 bg-white rounded-full shadow hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            Get Started
-          </Link>
+          <div className="flex justify-center gap-4">
+            <Link
+              to="/signup"
+              className="inline-block px-6 py-3 text-sm sm:text-base text-gray-800 bg-white rounded-full shadow hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              Get Started
+            </Link>
+            <Link
+              to="/addpassword"
+              className="inline-block px-6 py-3 text-sm sm:text-base text-gray-800 bg-white rounded-full shadow hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              Add Password
+            </Link>
+          </div>
         </div>
       </main>
     </div>
