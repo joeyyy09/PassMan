@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import TestimonialSection from "../components/testimonials";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -28,6 +29,11 @@ const Home = () => {
             Keep all of your login information safe and secure with our
             state-of-the-art password manager.
           </p>
+          <Link
+            className="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-semibold rounded-lg text-sm px-5 py-2.5 text-center"
+          >
+            Add Password
+          </Link>
         </div>
         
         {/* Desktop Image (hidden on mobile) */}
