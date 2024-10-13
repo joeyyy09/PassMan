@@ -6,7 +6,7 @@ const client = require("../configs/redis");
 const NodeRSA = require("node-rsa");
 const nodemailer = require("nodemailer");
 const key = new NodeRSA({ b: 1024 });
-const URL = "http://localhost:3300";
+const URL = "https://passman-backend-seven.vercel.app";
 
 // generating accessToken
 const accessTokenGenerator = (user) => {

@@ -1,20 +1,18 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-export default function Modal(props) {
+
+export default function Modal({ handleSignup, privateKey }) {
   const [showModal, setShowModal] = useState(false);
-  const { handleSignup, privateKey } = props;
-  const accessToken = sessionStorage.getItem("access");
   const navigate = useNavigate();
 
   const handleCont = () => {
     setShowModal(false);
     navigate("/home");
   };
-  const onclickSigup = () => {
-    try {
-      handleSignup();
 
+  const onclickSignup = async () => {
+    try {
+      await handleSignup();
       setShowModal(true);
     } catch (err) {
       console.log(err);
@@ -24,55 +22,45 @@ export default function Modal(props) {
   return (
     <>
       <button
-        className="mt-2 w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-600"
+        className="w-full py-3 px-4 text-black bg-white rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black"
         type="button"
-        onClick={onclickSigup}
+        onClick={onclickSignup}
       >
-        Signup
+        Sign up
       </button>
-      {showModal ? (
+      {showModal && (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
-                <div className=" flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl">Your Private Key</h3>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)}
-                  >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
-                </div>
-                {/*body*/}
-                <div className="relative p-6 flex-auto">
-                  <div className="my-4 text-slate-500 text-lg leading-relaxed">
-                    Your Private Key is
-                    <p id="privatekeyPopup">{privateKey}</p>
-                    <br />
-                    <p>
-                      Store this private key to access your stored passwords.
-                      This private key can't be recovered later on so we suggest
-                      you to store it somewhere safe.
-                    </p>
+          <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+              <div className="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true"></div>
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+              <div className="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full animate-modal-appear">
+                <div className="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 className="text-2xl leading-6 font-semibold text-white mb-4" id="modal-title">
+                        Your Private Key
+                      </h3>
+                      <div className="mt-2">
+                        <p className="text-gray-300 text-lg mb-4">
+                          Your Private Key is:
+                        </p>
+                        <p id="privatekeyPopup" className="text-cyan-400 font-mono break-all my-2 p-3 bg-gray-700 rounded-md">
+                          {privateKey}
+                        </p>
+                        <p className="text-gray-300 mt-4">
+                          Store this private key to access your stored passwords.
+                          This private key can't be recovered later on, so we suggest
+                          you store it somewhere safe.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  {/* <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Close
-                  </button> */}
+                <div className="bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
-                    className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-white text-base font-medium text-black hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200"
                     onClick={handleCont}
                   >
                     Continue
@@ -81,9 +69,8 @@ export default function Modal(props) {
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
-      ) : null}
+      )}
     </>
   );
 }
