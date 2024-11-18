@@ -244,6 +244,7 @@ body {
   }
 
   .grid {
+    margin: 0 auto ;
     grid-template-columns: 1fr;
     margin-bottom: 120px;
     max-width: 320px;

@@ -15,13 +15,17 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: "https://passmannn.vercel.app",
   })
 );
 
 app.use("/auth", authRoutes);
 app.use("/pass", passRoutes);
 // app.use("/key", keyRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
 
 const PORT = process.env.PORT || 3300;
 
